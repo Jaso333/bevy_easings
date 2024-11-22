@@ -37,21 +37,18 @@ pub struct EasingsLabel;
 
 impl<T: Default + Send + Sync + 'static> Plugin for EasingsPlugin<T> {
     fn build(&self, app: &mut App) {
-        app.add_systems(Update, ease_system::<Time, Transform>.in_set(EasingsLabel));
+        app.add_systems(Update, ease_system::<T, Transform>.in_set(EasingsLabel));
         #[cfg(feature = "sprite")]
-        app.add_systems(Update, ease_system::<Time, Sprite>.in_set(EasingsLabel));
+        app.add_systems(Update, ease_system::<T, Sprite>.in_set(EasingsLabel));
         #[cfg(feature = "ui")]
-        app.add_systems(Update, ease_system::<Time, Node>.in_set(EasingsLabel));
-        #[cfg(feature = "ui")]
-        app.add_systems(
-            Update,
-            ease_system::<Time, BackgroundColor>.in_set(EasingsLabel),
-        );
+        app.add_systems(Update, ease_system::<T, Node>.in_set(EasingsLabel));
         #[cfg(feature = "ui")]
         app.add_systems(
             Update,
-            ease_system::<Time, BorderColor>.in_set(EasingsLabel),
+            ease_system::<T, BackgroundColor>.in_set(EasingsLabel),
         );
+        #[cfg(feature = "ui")]
+        app.add_systems(Update, ease_system::<T, BorderColor>.in_set(EasingsLabel));
     }
 }
 
